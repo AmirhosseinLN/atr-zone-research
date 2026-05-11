@@ -24,6 +24,17 @@ The first working version, for XAUUSD and EURUSD:
 
 I made the execution assumptions deliberately pessimistic: entries happen on the next bar's open, costs are charged on every trade, and if the stop and the target are both touched inside one bar, the stop is assumed to have hit first.
 
+## v2 – Long-history validation
+
+Free hourly data only goes back about two years, which is too little to say anything about a strategy. In v2 I added an external CSV loader so I could test gold from 2013 to 2022, plus:
+
+- more instruments (GBPUSD, US30, NAS100, BTC, ETH)
+- optional filters for volatility regime, entry quality and trading session
+- a diagnostics script that splits results by year, hour, direction, zone age and volatility bucket to see where the edge actually sits
+- a live scanner that de-duplicates clustered signals in the journal
+
+The main lesson of this stage: a filter that looks great in the diagnostics is just a description of the past. It needs to survive data it has not seen.
+
 ## What I took from this
 
 - A good backtest is where the work starts. One look-ahead bug was worth roughly a fifth of the reported profit.
