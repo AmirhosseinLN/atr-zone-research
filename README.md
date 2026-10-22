@@ -35,6 +35,27 @@ Free hourly data only goes back about two years, which is too little to say anyt
 
 The main lesson of this stage: a filter that looks great in the diagnostics is just a description of the past. It needs to survive data it has not seen.
 
+## v3 – Audit, recent data, and a 33-market scan
+
+This is the stage where I stopped trusting my own results and went looking for what could be wrong.
+
+**Audit.** I found a look-ahead leak: the daily trend input could see the close of a day that was still in progress. After fixing it, gold's profit factor on 2013–2021 fell from 1.44 to 1.34 (net result from +43R to +34R). Lower, but the edge survived. I also fixed a crash in the config module, removed a slow per-bar data filter in the scanner, and changed the Monte Carlo to resample with replacement, because reshuffling the same trades can never change the total.
+
+**Fresh data.** I pulled data up to October 2026 and ran gold on a period the rules had never been tuned on: profit factor 1.66 over 30 trades.
+
+**33 markets.** I tested 12 forex pairs, 7 commodities, 6 indices and 8 crypto coins. Settings were chosen only on data before 1 August 2025 and judged on everything after it, so nothing was picked with hindsight.
+
+- Only gold held up in both periods and across almost every setting.
+- Pooled over all markets the result was not statistically significant, so this is a gold system, not a general one.
+- Many markets (including the JPY pairs) lost money before the cut-off and only won afterwards. I treat that as luck with the recent market, not as an edge.
+- Picking each market's best setting looked like +0.26R per trade on the first period and fell to +0.10R on the second. That is selection bias in numbers.
+
+| Gold validation report | 33-market scan |
+|---|---|
+| [![Gold validation](docs/images/v3-gold-validation.png)](docs/reports/v3_gold_validation.html) | [![Market scan](docs/images/v3-market-scan.png)](docs/reports/v3_market_scan.html) |
+
+The HTML reports are in [`docs/reports`](docs/reports) (download and open locally).
+
 ## What I took from this
 
 - A good backtest is where the work starts. One look-ahead bug was worth roughly a fifth of the reported profit.

@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0 (2026-10-22)
+- Fixed look-ahead in the daily trend input
+- Fixed config crash, faster scanner, bootstrap Monte Carlo
+- Re-test on data to Oct 2026
+- 33-market scan with discovery/validation split
+
 ## 2.0 (2026-05-11)
 - External CSV loader, 2013-2022 gold backtests
 - GBPUSD, US30, NAS100, BTC, ETH

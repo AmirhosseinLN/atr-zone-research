@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XAUUSD Zone Strategy Report</title>
+<style>
+:root{--bg:#0f1318;--card:#171d25;--tx:#e6eaf0;--mu:#8b97a7;--ac:#4cc2ff;--pos:#3ecf8e;--neg:#ff6b6b;--bd:#263040}
+@media (prefers-color-scheme:light){:root{--bg:#f5f7fa;--card:#fff;--tx:#1b2430;--mu:#5d6b7c;--ac:#0b78c4;--pos:#12915a;--neg:#d23b3b;--bd:#dde3ea}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:26px;margin:0 0 4px}h2{font-size:18px;margin:36px 0 10px}.sub{color:var(--mu);margin:0 0 20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px 14px}
+.card b{display:block;font-size:22px}.card span{color:var(--mu);font-size:12px}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--bd);border-radius:10px;overflow:hidden;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--bd)}th:first-child,td:first-child{text-align:left}
+th{color:var(--mu);font-weight:600;font-size:12px}tr:last-child td{border-bottom:0}
+.wrap{overflow-x:auto}.pos{color:var(--pos)}.neg{color:var(--neg)}
+.note{color:var(--mu);font-size:13px}svg{width:100%;height:auto;background:var(--card);border:1px solid var(--bd);border-radius:10px}
+.warn{border-left:4px solid var(--neg);background:var(--card);padding:10px 14px;border-radius:6px}
+li{margin:6px 0}code{background:var(--card);padding:1px 5px;border-radius:4px}
+</style></head><body><main>
+<h1>XAUUSD Zone-Reversal Strategy</h1>
+<p class="sub">Rule-based trend + support/resistance strategy on gold (XAUUSD) · realistic trading costs included</p>
+
+<div class="cards">
+ <div class="card"><b>158</b><span>trades 2013–2022</span></div>
+ <div class="card"><b>1.37</b><span>profit factor</span></div>
+ <div class="card"><b>35.4%</b><span>win rate</span></div>
+ <div class="card"><b>+0.241R</b><span>expectancy / trade</span></div>
+ <div class="card"><b>+38.0R</b><span>net result</span></div>
+ <div class="card"><b>9.5R</b><span>max drawdown</span></div>
+</div>
+
+<h2>Equity curve (cumulative R)</h2>
+<svg id="eq" viewBox="0 0 900 340" role="img" aria-label="Equity curve"></svg>
+<p class="note">Lower band = drawdown from the running peak.</p>
+
+<h2>Results by period</h2>
+<div class="wrap"><table><thead><tr><th>Period</th><th>Trades</th><th>Win</th><th>PF</th><th>Exp (R)</th><th>Net R</th><th>Max DD</th><th>Max L-streak</th></tr></thead><tbody><tr><td>2013–2018</td><td>106</td><td>34.0%</td><td>1.29</td><td>+0.189</td><td>+20.0</td><td>9.5</td><td>8</td></tr><tr><td>2013–2021</td><td>155</td><td>34.8%</td><td>1.34</td><td>+0.219</td><td>+34.0</td><td>9.5</td><td>8</td></tr><tr><td>2013–2022</td><td>158</td><td>35.4%</td><td>1.37</td><td>+0.241</td><td>+38.0</td><td>9.5</td><td>8</td></tr></tbody></table></div>
+
+<h2>By year</h2>
+<div class="wrap"><table><thead><tr><th>Year</th><th>Trades</th><th>Win</th><th>PF</th><th>Net R</th></tr></thead><tbody><tr><td>2013</td><td>11</td><td>36.4%</td><td>1.43</td><td class='pos'>+3.0</td></tr><tr><td>2014</td><td>21</td><td>38.1%</td><td>1.54</td><td class='pos'>+7.0</td></tr><tr><td>2015</td><td>21</td><td>33.3%</td><td>1.25</td><td class='pos'>+3.5</td></tr><tr><td>2016</td><td>14</td><td>35.7%</td><td>1.39</td><td class='pos'>+3.5</td></tr><tr><td>2017</td><td>21</td><td>19.0%</td><td>0.59</td><td class='neg'>-7.0</td></tr><tr><td>2018</td><td>18</td><td>44.4%</td><td>2.00</td><td class='pos'>+10.0</td></tr><tr><td>2019</td><td>17</td><td>52.9%</td><td>2.81</td><td class='pos'>+14.5</td></tr><tr><td>2020</td><td>14</td><td>35.7%</td><td>1.39</td><td class='pos'>+3.5</td></tr><tr><td>2021</td><td>18</td><td>22.2%</td><td>0.71</td><td class='neg'>-4.0</td></tr><tr><td>2022</td><td>3</td><td>66.7%</td><td>5.00</td><td class='pos'>+4.0</td></tr></tbody></table></div>
+
+<h2>Audit finding: look-ahead leak (fixed)</h2><p>While reviewing the code I found that the daily trend input could see the close of a day that was still in progress. It now only uses fully closed daily bars. Results dropped, which is exactly why the check matters, but the edge survived:</p>
+<div class="wrap"><table><thead><tr><th rowspan="2">Period</th><th colspan="3">Before (leaky)</th><th colspan="3">After (fixed)</th></tr><tr><th>Trades</th><th>PF</th><th>Net R</th><th>Trades</th><th>PF</th><th>Net R</th></tr></thead><tbody><tr><td>2013–2018</td><td>105</td><td>1.30</td><td>+21.0</td><td>106</td><td>1.29</td><td>+20.0</td></tr><tr><td>2013–2021</td><td>153</td><td>1.44</td><td>+43.0</td><td>155</td><td>1.34</td><td>+34.0</td></tr></tbody></table></div>
+
+<h2>Monte Carlo (bootstrap, 5 000 runs)</h2>
+<div class="cards">
+ <div class="card"><b>+38.0R</b><span>median final</span></div>
+ <div class="card"><b>+3.0R</b><span>5th percentile final</span></div>
+ <div class="card"><b>3.3%</b><span>P(final &lt; 0)</span></div>
+ <div class="card"><b>23.5R</b><span>95th pct max DD</span></div>
+ <div class="card"><b>15</b><span>95th pct loss streak</span></div>
+</div>
+<p class="note">The old reshuffle-only Monte Carlo could never show P(final &lt; 0) because shuffling keeps the sum fixed. Resampling with replacement does.</p>
+
+<h2>Out-of-sample check</h2>
+<p>Window: <b>2024-06-02 → 2026-10-22</b> (fresh Yahoo data, real daily bars for the trend bias). Same parameters, <b>never tuned on this data</b>.</p><table><thead><tr><th></th><th>Trades</th><th>Win</th><th>PF</th><th>Exp (R)</th><th>Net R</th><th>Max DD</th><th>Max L-streak</th></tr></thead><tbody><tr><td>Out-of-sample</td><td>30</td><td>40.0%</td><td>1.66</td><td>+0.393</td><td>+11.8</td><td>5.0</td><td>5</td></tr></tbody></table><p class='note'>Sample is small (30 trades) &mdash; treat it as a sanity check, not proof.</p>
+
+<h2>Other markets &amp; recent data</h2><p>Fresh data from public sources (Yahoo Finance, Binance). The same rule set was applied to every market and <b>nothing was re-tuned per market</b>. Each market is shown with three rule variants (plain, filtered, filtered without a session limit).</p><div class='wrap'><table><thead><tr><th>Dataset</th><th>Config</th><th>Trades</th><th>PF</th><th>Net R</th><th>Max DD</th><th>PF 1st / 2nd half</th></tr></thead><tbody><tr><td>XAUUSD 2013-2022</td><td>plain</td><td>323</td><td class='neg'>0.99</td><td class='neg'>-1.5</td><td>27.5</td><td>1.13 / 0.87</td></tr><tr><td></td><td>tuned</td><td>156</td><td class='pos'>1.32</td><td class='pos'>+33.0</td><td>8.5</td><td>1.11 / 1.56</td></tr><tr><td></td><td>tuned_24h</td><td>213</td><td class=''>1.05</td><td class='pos'>+7.5</td><td>21.0</td><td>0.94 / 1.16</td></tr><tr><td>XAUUSD 2024-2026</td><td>plain</td><td>50</td><td class='pos'>1.80</td><td class='pos'>+23.3</td><td>7.0</td><td>1.41 / 2.29</td></tr><tr><td></td><td>tuned</td><td>30</td><td class='pos'>1.66</td><td class='pos'>+11.8</td><td>5.0</td><td>2.19 / 1.23</td></tr><tr><td></td><td>tuned_24h</td><td>44</td><td class='pos'>1.42</td><td class='pos'>+11.8</td><td>10.5</td><td>1.43 / 1.41</td></tr><tr><td>EURUSD 2024-2026</td><td>plain</td><td>125</td><td class='neg'>0.81</td><td class='neg'>-18.2</td><td>24.5</td><td>0.66 / 0.96</td></tr><tr><td></td><td>tuned</td><td>60</td><td class=''>1.10</td><td class='pos'>+4.3</td><td>14.0</td><td>0.91 / 1.33</td></tr><tr><td></td><td>tuned_24h</td><td>76</td><td class=''>1.18</td><td class='pos'>+9.3</td><td>12.5</td><td>1.15 / 1.21</td></tr><tr><td>GBPUSD 2024-2026</td><td>plain</td><td>129</td><td class='neg'>0.73</td><td class='neg'>-26.8</td><td>32.5</td><td>0.90 / 0.57</td></tr><tr><td></td><td>tuned</td><td>47</td><td class='neg'>0.88</td><td class='neg'>-4.1</td><td>10.1</td><td>1.33 / 0.52</td></tr><tr><td></td><td>tuned_24h</td><td>63</td><td class='neg'>0.72</td><td class='neg'>-13.3</td><td>18.0</td><td>0.73 / 0.72</td></tr><tr><td>US30 2024-2026</td><td>plain</td><td>96</td><td class='neg'>0.74</td><td class='neg'>-19.3</td><td>27.5</td><td>0.66 / 0.82</td></tr><tr><td></td><td>tuned</td><td>35</td><td class=''>1.15</td><td class='pos'>+3.5</td><td>8.5</td><td>1.36 / 0.96</td></tr><tr><td></td><td>tuned_24h</td><td>52</td><td class='pos'>1.21</td><td class='pos'>+7.5</td><td>12.0</td><td>1.11 / 1.32</td></tr><tr><td>NAS100 2024-2026</td><td>plain</td><td>84</td><td class='pos'>1.27</td><td class='pos'>+15.0</td><td>7.0</td><td>1.54 / 1.03</td></tr><tr><td></td><td>tuned</td><td>40</td><td class='neg'>0.73</td><td class='neg'>-8.5</td><td>12.5</td><td>1.07 / 0.44</td></tr><tr><td></td><td>tuned_24h</td><td>50</td><td class='neg'>0.88</td><td class='neg'>-4.5</td><td>13.5</td><td>1.18 / 0.62</td></tr><tr><td>BTCUSD 2017-2026</td><td>plain</td><td>376</td><td class='neg'>0.98</td><td class='neg'>-4.1</td><td>46.0</td><td>1.09 / 0.89</td></tr><tr><td></td><td>tuned</td><td>206</td><td class='neg'>0.87</td><td class='neg'>-19.6</td><td>34.0</td><td>0.84 / 0.90</td></tr><tr><td></td><td>tuned_24h</td><td>258</td><td class='neg'>0.83</td><td class='neg'>-33.1</td><td>42.0</td><td>0.89 / 0.76</td></tr><tr><td>ETHUSD 2017-2026</td><td>plain</td><td>372</td><td class='neg'>0.92</td><td class='neg'>-21.0</td><td>38.0</td><td>0.89 / 0.95</td></tr><tr><td></td><td>tuned</td><td>210</td><td class=''>1.03</td><td class='pos'>+4.6</td><td>14.5</td><td>1.25 / 0.83</td></tr><tr><td></td><td>tuned_24h</td><td>237</td><td class='neg'>0.99</td><td class='neg'>-1.5</td><td>21.5</td><td>1.14 / 0.85</td></tr></tbody></table></div><p class='note'>Reading it: only gold is profitable on both its long history and the new 2024–2026 data. EURUSD/GBPUSD/US30/NAS100/BTC/ETH hover around or below PF 1.0 &mdash; picking whichever variant looks best there would just be data-mining.</p>
+
+<h2>Findings &amp; recommendations</h2>
+<ul>
+ <li><b>Parameters were tuned on the older data.</b> Treat in-sample numbers as optimistic; the out-of-sample row is the more honest guide but is still a small sample.</li>
+ <li><b>A win rate around a third</b> means long losing streaks are normal (see 95th pct streak above). Size positions so a streak that long is survivable.</li>
+ <li><b>Trade gold only, for now.</b> The same rules do not show a reliable edge on FX, indices or crypto (table above). Forex pairs and indices only have ~2 years of free hourly data, so those verdicts are tentative; crypto has 9 years and still fails.</li>
+ <li>Stop and target are checked on H4 bars; when both fall in one bar the stop wins (conservative) &mdash; keep that.</li>
+ <li>Next experiments: walk-forward re-optimisation, and a parameter-sensitivity grid to check the edge is not one lucky setting.</li>
+</ul>
+<p class="note">Research output, not financial advice. Past performance does not guarantee future results.</p>
+</main>
+<script>
+const D={"equity": {"t": ["2013-05-10", "2013-10-22", "2014-03-12", "2014-08-21", "2015-01-06", "2015-04-28", "2015-09-24", "2016-04-12", "2016-11-09", "2017-04-12", "2017-08-28", "2018-01-12", "2018-05-15", "2018-10-25", "2019-04-15", "2019-10-11", "2020-06-03", "2020-11-19", "2021-06-16", "2021-10-22", "2022-02-11"], "eq": [2.5, 5.0, 0.5, 10.0, 9.0, 8.0, 10.5, 13.0, 15.5, 14.5, 13.5, 12.5, 18.5, 21.0, 27.0, 33.0, 35.5, 38.0, 37.0, 36.0, 38.0], "dd": [0.0, -1.0, -5.5, 0.0, -3.5, -4.5, -2.0, -0.5, -2.0, -3.5, -4.5, -5.5, -2.0, -3.0, -1.0, -2.0, -1.5, -1.0, -3.5, -4.5, -2.5]}, "yearly": [{"year": 2013, "n": 11, "win": 0.36363636363636365, "pf": 1.4285714285714304, "net": 3.0000000000000124}, {"year": 2014, "n": 21, "win": 0.38095238095238093, "pf": 1.5384615384615352, "net": 6.999999999999956}, {"year": 2015, "n": 21, "win": 0.3333333333333333, "pf": 1.2500000000000002, "net": 3.5000000000000036}, {"year": 2016, "n": 14, "win": 0.35714285714285715, "pf": 1.3888888888888882, "net": 3.499999999999993}, {"year": 2017, "n": 21, "win": 0.19047619047619047, "pf": 0.5882352941176463, "net": -7.000000000000012}, {"year": 2018, "n": 18, "win": 0.4444444444444444, "pf": 2.000000000000001, "net": 10.00000000000001}, {"year": 2019, "n": 17, "win": 0.5294117647058824, "pf": 2.8124999999999916, "net": 14.499999999999932}, {"year": 2020, "n": 14, "win": 0.35714285714285715, "pf": 1.3888888888888893, "net": 3.5000000000000036}, {"year": 2021, "n": 18, "win": 0.2222222222222222, "pf": 0.7142857142857139, "net": -4.000000000000005}, {"year": 2022, "n": 3, "win": 0.6666666666666666, "pf": 5.0, "net": 4.0}]};
+(function(){
+ const s=document.getElementById('eq'),W=900,H=340,L=46,R=12,T=14,B=26,split=240;
+ const eq=D.equity.eq,dd=D.equity.dd,n=eq.length,t=D.equity.t;
+ const mx=Math.max(...eq,0),mn=Math.min(...eq,0);
+ const x=i=>L+(W-L-R)*i/Math.max(n-1,1);
+ const y=v=>T+(split-T)*(1-(v-mn)/(mx-mn||1));
+ const ddMin=Math.min(...dd,-1),y2=v=>split+16+(H-B-split-16)*(v/ddMin);
+ let g='';
+ for(let k=0;k<=4;k++){const v=mn+(mx-mn)*k/4;g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="currentColor" opacity=".12"/><text x="${L-6}" y="${y(v)+4}" font-size="11" text-anchor="end" fill="currentColor" opacity=".6">${v.toFixed(0)}</text>`;}
+ g+=`<polyline fill="none" stroke="var(--ac)" stroke-width="2" points="${eq.map((v,i)=>x(i)+','+y(v)).join(' ')}"/>`;
+ g+=`<polygon fill="var(--neg)" opacity=".35" points="${x(0)},${y2(0)} ${dd.map((v,i)=>x(i)+','+y2(v)).join(' ')} ${x(n-1)},${y2(0)}"/>`;
+ g+=`<text x="${L}" y="${H-8}" font-size="11" fill="currentColor" opacity=".6">${t[0]}</text><text x="${W-R}" y="${H-8}" font-size="11" text-anchor="end" fill="currentColor" opacity=".6">${t[n-1]}</text>`;
+ s.style.color='var(--tx)';s.innerHTML=g;
+})();
+</script></body></html>
