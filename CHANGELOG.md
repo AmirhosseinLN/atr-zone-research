@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.0 (2026-10-23)
+- One-command live scanner and HTML signal page
+- Quality gate chosen on old + new data
+
 ## 3.0 (2026-10-22)
 - Fixed look-ahead in the daily trend input
 - Fixed config crash, faster scanner, bootstrap Monte Carlo

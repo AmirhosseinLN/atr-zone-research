@@ -1,0 +1,67 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Gold ATR Signals</title>
+<style>
+:root{--bg:#0f1318;--card:#171d25;--tx:#e6eaf0;--mu:#8b97a7;--ac:#4cc2ff;--pos:#3ecf8e;--neg:#ff6b6b;--wa:#f2b84b;--bd:#263040}
+@media (prefers-color-scheme:light){:root{--bg:#f5f7fa;--card:#fff;--tx:#1b2430;--mu:#5d6b7c;--ac:#0b78c4;--pos:#12915a;--neg:#d23b3b;--wa:#b27708;--bd:#dde3ea}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:960px;margin:0 auto;padding:22px 16px 64px}h1{font-size:24px;margin:0}h2{font-size:22px;margin:2px 0 0}h3{font-size:16px;margin:28px 0 8px}
+.sub,.mu,.small{color:var(--mu)}.small{font-size:12.5px}.pos{color:var(--pos)}.neg{color:var(--neg)}
+.signal{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin:18px 0}
+.signal.long{border-left:5px solid var(--pos)}.signal.short{border-left:5px solid var(--neg)}.signal.open{border-left:5px solid var(--ac)}.signal.none{border-left:5px solid var(--bd)}
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.grade{font-size:11px;letter-spacing:.08em;color:var(--mu);font-weight:700}
+.pill{padding:5px 12px;border-radius:999px;font-weight:700;font-size:13px;border:1px solid currentColor}.pill.go{color:var(--pos)}.pill.late{color:var(--neg)}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:14px 0}
+.grid4>div{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px 12px}.grid4 span{color:var(--mu);font-size:12px;display:block}.grid4 b{font-size:24px;display:block}.grid4 i{font-style:normal;color:var(--mu);font-size:12px}
+.calc{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:10px 0}.calc input{width:90px;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:4px 6px}
+.warn{border-left:4px solid var(--wa);padding:6px 12px;background:var(--bg);border-radius:6px}.why li{margin:4px 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 12px}.card b{font-size:20px;display:block}.card span{color:var(--mu);font-size:12px}
+.wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--bd);border-radius:10px;font-variant-numeric:tabular-nums}th,td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--bd)}th{color:var(--mu);font-size:12px}tr:last-child td{border-bottom:0}
+svg{width:100%;height:auto;background:var(--card);border:1px solid var(--bd);border-radius:10px}#stale{display:none}
+</style></head><body><main>
+<h1>Gold ATR Signals</h1>
+<p class="sub">Updated <b class="ts" data-t="2026-10-22T22:39:56.445189+00:00">2026-10-22 22:39 UTC</b> · only A-grade setups are shown · decisions are yours</p>
+<div id="stale" class="warn">This page is more than 5 hours old &mdash; run <code>python run.py</code> again.</div>
+
+<section class="signal none">
+  <div class="head"><div><span class="grade">NO TRADE</span><h2>XAUUSD: wait</h2></div></div>
+  <p>No A-grade setup right now. That is the normal state &mdash; the system only fires about once a month.</p></section>
+<h3>XAUUSD status</h3>
+<div class="cards">
+ <div class="card"><b>4,045.30</b><span>price · data 2026-10-22 22:29 UTC</span></div>
+ <div class="card"><b class="neg">BEARISH</b><span>daily trend</span></div>
+ 
+ <div class="card"><b class="mu">35%</b><span>volatility percentile (must be in range)</span></div>
+</div>
+
+
+<h3>Track record of the A-grade rules</h3>
+<div class="cards">
+ <div class="card"><b>149</b><span>trades 2013–2022 + 2024–2026</span></div>
+ <div class="card"><b>36%</b><span>win rate (fixed reward:risk target)</span></div>
+ <div class="card"><b>+0.27R</b><span>average per trade</span></div>
+ <div class="card"><b>1.36 / 1.79</b><span>profit factor old / new data</span></div>
+ <div class="card"><b>~1 / month</b><span>how often a signal appears</span></div>
+</div>
+<svg id="eq" viewBox="0 0 900 260" style="margin-top:12px"></svg>
+<h3>Be realistic</h3>
+<ul>
+ <li>No signal is &ldquo;sure&rdquo;. Historically about <b>36%</b> of A-grade trades won; the edge comes from winners paying several times the loser.</li>
+ <li>A losing streak of <b>15</b> trades in a row is within normal bounds (95th percentile); the worst drawdown to plan for is about <b>22R</b>. At 0.5% risk per trade that is roughly 11% of the account.</li>
+ <li>Resampling the history, about <b>3%</b> of paths ended with a net loss. Newer data (2024–26) was better than older data, but it is only 24 trades.</li>
+ <li>The rules were tuned on 2013–2021 and confirmed on 2024–2026; they have never traded real money. Start small or on a demo account first.</li>
+ <li>Research tool, not financial advice. Prices come from Yahoo gold futures (GC=F) and can differ from your broker's spot price by a few dollars: shift levels by that difference.</li>
+</ul>
+</main>
+<script>
+document.querySelectorAll('.ts').forEach(function(e){var d=new Date(e.dataset.t);if(!isNaN(d))e.title=d.toLocaleString()+' (your time)';
+ if(e.dataset.t.indexOf('T')>-1||e.dataset.t.indexOf(' ')>-1)e.textContent=e.textContent+' · '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+' local';});
+if(Date.now()-new Date("2026-10-22T22:39:56.445189+00:00").getTime()>5*3600*1000)document.getElementById('stale').style.display='block';
+(function(){var D={"t": ["2013-05-10", "2014-01-20", "2014-08-14", "2015-01-06", "2015-08-10", "2016-01-26", "2016-08-29", "2017-05-01", "2017-09-29", "2018-03-06", "2018-10-11", "2019-04-16", "2019-12-26", "2020-09-08", "2021-03-30", "2021-10-22", "2025-01-10", "2025-06-27", "2026-06-23", "2026-09-14"], "eq": [2.5, 1.5, 0.5, -0.5, -1.5, -2.5, 3.5, 6.0, 5.0, 7.5, 13.5, 16.0, 18.5, 21.0, 27.0, 26.0, 32.0, 34.5, 44.0, 40.0]},s=document.getElementById('eq'),W=900,H=260,L=40,R=10,T=10,B=22,eq=D.eq,n=eq.length;
+var mx=Math.max.apply(null,eq.concat([0])),mn=Math.min.apply(null,eq.concat([0]));
+var x=function(i){return L+(W-L-R)*i/Math.max(n-1,1)},y=function(v){return T+(H-T-B)*(1-(v-mn)/(mx-mn||1))};
+var g='';for(var k=0;k<=4;k++){var v=mn+(mx-mn)*k/4;g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="currentColor" opacity=".12"/><text x="'+(L-6)+'" y="'+(y(v)+4)+'" font-size="11" text-anchor="end" fill="currentColor" opacity=".6">'+v.toFixed(0)+'R</text>';}
+g+='<polyline fill="none" stroke="var(--ac)" stroke-width="2" points="'+eq.map(function(v,i){return x(i)+','+y(v)}).join(' ')+'"/>';
+g+='<text x="'+L+'" y="'+(H-6)+'" font-size="11" fill="currentColor" opacity=".6">'+D.t[0]+'</text><text x="'+(W-R)+'" y="'+(H-6)+'" font-size="11" text-anchor="end" fill="currentColor" opacity=".6">'+D.t[n-1]+' (gap 2022-24: no data)</text>';
+s.style.color='var(--tx)';s.innerHTML=g;})();
+</script></body></html>

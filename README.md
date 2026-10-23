@@ -56,6 +56,21 @@ This is the stage where I stopped trusting my own results and went looking for w
 
 The HTML reports are in [`docs/reports`](docs/reports) (download and open locally).
 
+## v4 – Live signal page
+
+A standalone runner for the one market that passed. One command refreshes the data, replays the strategy with the same guards the backtest uses (one trade at a time, cooldown, trading session), and writes a single HTML page.
+
+- If there is a setup, the page shows the entry, stop, target, a validity window and a position-size calculator.
+- If there is not, it says "no trade". That is the normal state: only the strongest class of setup is shown, roughly once a month.
+- The quality gate was chosen by testing nine candidate filters on both the old and the new data and keeping the only one that improved both.
+- To check the live code path I replayed the last nine months through it and got about one signal a month, which matches the backtest frequency.
+
+| Example signal (replay of a real past setup) | Normal state: no trade |
+|---|---|
+| [![Signal example](docs/images/v4-signal-example.png)](docs/reports/v4_signal_example.html) | [![Idle](docs/images/v4-live-idle.png)](docs/reports/v4_live_idle.html) |
+
+Historical numbers for that setup class: 149 trades across 2013–2022 and 2024–2026, about 36% winners, profit factor 1.36 on the old data and 1.79 on the new data. The page also states the part that matters most in practice: a long losing streak is normal for a strategy with a win rate like that.
+
 ## What I took from this
 
 - A good backtest is where the work starts. One look-ahead bug was worth roughly a fifth of the reported profit.
